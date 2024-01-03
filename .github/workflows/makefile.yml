@@ -1,0 +1,27 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: install dependencies
+        run: |
+          apt-get install imagemagick
+          cargo install oxipng
+    
+    - name: Create tarball
+      run: make dragn-emoji.tar.gz
+
+    - name: Archive tarball
+      uses: actions/upload-artifact@v3
+      with:
+        name: emoji-package
+        path: dragn-emoji.tar.gz
